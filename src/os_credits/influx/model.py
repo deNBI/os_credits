@@ -91,7 +91,10 @@ class InfluxDBPoint:
             # values of this fields are already known
             if f.name in args:
                 continue
-            args[f.name] = deserialize(combined_dict[f.name], f)
+            try:
+                args[f.name] = deserialize(combined_dict[f.name], f)
+            except Exception as e:
+                internal_logger.info(str(e) + "values were: %s, %s", combined_dict[f.name], f)
         new_point = cls(**args)
         internal_logger.debug("Constructed %s", new_point)
         return new_point
