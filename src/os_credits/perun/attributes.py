@@ -79,7 +79,7 @@ class DenbiCreditsGranted(
         """Stored as str inside perun, unfortunately"""
         if value is None:
             raise DenbiCreditsGrantedMissing()
-        return int(value)
+        return int(float(value))
 
     def perun_serialize(self, value: int) -> str:
         """Stored as str inside perun, unfortunately"""
