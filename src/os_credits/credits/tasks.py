@@ -119,7 +119,7 @@ async def process_influx_line(
     :param app: Application object holding our helper class instances
     :param group_locks: Dictionary with :ref:`Group Locks`
     """
-    task_logger.info("Processing Influx Line `%s`", influx_line)
+    task_logger.debug("Processing Influx Line `%s`", influx_line)
     # we want to end this task as quickly as possible if the InfluxDB Point is not
     # needed
     try:
