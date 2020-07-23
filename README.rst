@@ -38,17 +38,17 @@ level or get stats **without restarting** it you have two possibilities:
 Building
 --------
 
-Use the provided ``Makefile`` via ``make build-docker``. This will build
+Use the provided ``Makefile`` via ``make docker-build``. This will build
 ``$USER/os_credits`` and use the version of the project as version of
 the image. To modify this values call
-``make build-docker DOCKER_USERNAME=<your_username>``.
+``make build-docker DOCKER_USERNAME=<your_username> DOCKER_IMAGENAME=<your_imagename>``.
 
 
 Stack integration
 ~~~~~~~~~~~~~~~~~
 
 To run the code use the provided ``Dockerfile.dev`` which you can build
-via ``make docker-build-dev``. Afterward use ``make docker-run`` to
+via ``make docker-build-dev``. Afterward use ``make docker-project_usage-dev`` to
 integrate the development container into the ``project_usage`` stack.
 
 The development container is using the ``adev runserver`` command from
