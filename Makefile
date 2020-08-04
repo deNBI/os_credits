@@ -45,7 +45,7 @@ docker-project_usage-dev: ## Run 'os_credits-dev' and integrate it into the 'dev
 	docker stop portal_credits || true
 	docker rm portal_credits || true
 	docker run \
-		--publish=8000:80 \
+		--publish=8002:80 \
 		--name portal_credits \
 		--network project_usage_portal \
 		--volume $(PWD)/src:/code/src:ro \
