@@ -142,13 +142,13 @@ class Group:
                 attributes[attr["friendlyName"]] = attr
 
         if requested_resource_bound_attributes:
-            self.assigned_resource = await self.is_assigned_resource()
-            if not self.assigned_resource:
-                raise GroupResourceNotAssociatedError(
-                    f"Group `{self.name}` is not associated with resource with id "
-                    f"`{self.resource_id}` but resource bound attributes have been "
-                    "requested "
-                )
+            #self.assigned_resource = await self.is_assigned_resource()
+            #if not self.assigned_resource:
+                # raise GroupResourceNotAssociatedError(
+                #    f"Group `{self.name}` is not associated with resource with id "
+                #    f"`{self.resource_id}` but resource bound attributes have been "
+                #    "requested "
+                #)
             for attr in await get_resource_bound_attributes(
                 self.id,
                 self.resource_id,
@@ -213,7 +213,8 @@ class Group:
             )
             await set_attributes(self.id, changed_attrs)
         if changed_resource_bound_attrs:
-            if getattr(self, "assigned_resource", False):
+            #tlin: changed this bc it always did not work
+            if True: #getattr(self, "assigned_resource", False):
                 internal_logger.debug(
                     "Sending modified resource bound attributes to perun %s",
                     changed_resource_bound_attrs,
