@@ -394,6 +394,7 @@ async def costs_per_hour(request: web.Request) -> web.Response:
     costs_per_hour = Decimal(0)
     for friendly_name, spec in machine_specs.items():
         try:
+            spec = Decimal(spec)
             costs_per_hour += Metric.metrics_by_friendly_name[
                 friendly_name
             ].costs_per_hour(spec)
