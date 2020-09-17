@@ -206,7 +206,7 @@ class TotalUsageMetric(
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def costs_per_hour(cls, spec: int) -> Credits:
+    def costs_per_hour(cls, spec: Decimal) -> Credits:
         return Credits(
             (spec * cls.CREDITS_PER_VIRTUAL_HOUR).quantize(
                 config["OS_CREDITS_PRECISION"]

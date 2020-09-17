@@ -36,6 +36,14 @@ docker-build-dev: ## Build Dockerfile.dev with name 'os_credits-dev'
 	find . -type d -name '__pycache__' -prune -exec rm -rf {} \;
 	docker build -f Dockerfile.dev -t os_credits-dev .
 
+.PHONY: build-run-dev
+build-run-dev: ## Build Dockerfile.dev with name 'os_credits-dev' and start docker-compose
+	find . -type d -name '__pycache__' -prune -exec rm -rf {} \;
+	docker build -f Dockerfile.dev -t os_credits-dev .
+	docker-compose up -d
+	docker stop os_credits_credits_1
+	docker start os_credits_credits_1
+
 .PHONY: docker-run-dev
 docker-run-dev: ## Run 'os_credits-dev' inside 'docker-compose.yml' attached - os_credits-dev:80 -> localhost:8000
 	poetry run docker-compose up 
