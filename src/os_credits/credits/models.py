@@ -25,12 +25,9 @@ class VCPUMetric(TotalUsageMetric, name="project_vcpu_usage", friendly_name="cpu
 class RAMMetric(TotalUsageMetric, name="project_mb_usage", friendly_name="ram"):
 
     # always specify the amount as string to prevent inaccuracies of builtin float
-    # division by 1024 to compensate for the usage of MiB instead of GiB
     CREDITS_PER_VIRTUAL_HOUR = config["RAM_CREDIT_PER_HOUR"]
     description = (
-        "Amount of RAM in MiB, meaning *1024 instead of *1000. Modeled this "
-        "way since the same unit is used by OpenStack for its "
-        "``os-simple-tenant-usage`` api."
+        "Amount of RAM in GiB."
     )
 
 

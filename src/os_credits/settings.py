@@ -151,7 +151,7 @@ class Config(TypedDict):
 
         Cost of running one GB of RAM for one hour.
 
-        Default: ``0.3 / 1024``
+        Default: ``0.3``
     """
 
     CLOUD_GOVERNANCE_MAIL: str
@@ -201,7 +201,7 @@ default_config = Config(
     OS_CREDITS_PROJECT_WHITELIST=None,
     OS_CREDITS_WORKERS=10,
     VCPU_CREDIT_PER_HOUR=Decimal(1),
-    RAM_CREDIT_PER_HOUR=Decimal("0.3") / Decimal(1024),
+    RAM_CREDIT_PER_HOUR=Decimal("0.3"),
 )
 
 
@@ -301,7 +301,7 @@ def parse_config_from_environment() -> Config:
 
     if "RAM_CREDIT_PER_HOUR" in PROCESSED_ENV_CONFIG:
         PROCESSED_ENV_CONFIG["RAM_CREDIT_PER_HOUR"] = (
-            Decimal(PROCESSED_ENV_CONFIG["RAM_CREDIT_PER_HOUR"]) / Decimal(1024)
+            Decimal(PROCESSED_ENV_CONFIG["RAM_CREDIT_PER_HOUR"])
         )
 
     # this would be the right way but makes pytest hang forever -.-'
