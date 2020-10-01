@@ -140,6 +140,18 @@ class Config(TypedDict):
         new InfluxDB lines put into queue by the endpoint handler.
 
         Default: ``10``
+
+    .. envvar:: VCPU_CREDIT_PER_HOUR
+
+        Cost of running one vCPU core for one hour.
+
+        Default: ``1``
+
+    .. envvar:: RAM_CREDIT_PER_HOUR
+
+        Cost of running one GB of RAM for one hour.
+
+        Default: ``0.3``
     """
 
     CLOUD_GOVERNANCE_MAIL: str
@@ -163,6 +175,8 @@ class Config(TypedDict):
     OS_CREDITS_PRECISION: Decimal
     OS_CREDITS_PROJECT_WHITELIST: Optional[Set[str]]
     OS_CREDITS_WORKERS: int
+    VCPU_CREDIT_PER_HOUR: Decimal
+    RAM_CREDIT_PER_HOUR: Decimal
 
 
 default_config = Config(
@@ -186,6 +200,8 @@ default_config = Config(
     OS_CREDITS_PRECISION=Decimal(10) ** -2,
     OS_CREDITS_PROJECT_WHITELIST=None,
     OS_CREDITS_WORKERS=10,
+    VCPU_CREDIT_PER_HOUR=Decimal(1),
+    RAM_CREDIT_PER_HOUR=Decimal("0.3"),
 )
 
 
@@ -242,9 +258,50 @@ def parse_config_from_environment() -> Config:
             # value from the environment but rather the default one
             del environ[int_value_key]
 
+    for decimal_value_key in [
+        "VCPU_CREDIT_PER_HOUR",
+        "RAM_CREDIT_PER_HOUR",
+    ]:
+        try:
+            decimal_value = Decimal(environ[decimal_value_key])
+            if decimal_value < 0:
+                internal_logger.warning(
+                    "Decimal value (%s) must not be negative, falling back to default "
+                    "value",
+                    decimal_value_key,
+                )
+                del environ[decimal_value_key]
+                continue
+            PROCESSED_ENV_CONFIG.update({decimal_value_key: decimal_value})
+            internal_logger.debug(f"Added {decimal_value_key} to procssed env")
+        except KeyError:
+            # Environment variable not set, that's ok
+            pass
+        except ValueError:
+            internal_logger.warning(
+                "Could not convert value of $%s('%s') to Decimal",
+                decimal_value_key,
+                environ[decimal_value_key],
+            )
+            # since we cannot use a subset of the actual environment, see below, we have
+            # to remove invalid keys from environment to make sure that if such a key is
+            # looked up inside the config the chainmap does not return the unprocessed
+            # value from the environment but rather the default one
+            del environ[decimal_value_key]
+
     if "OS_CREDITS_PRECISION" in PROCESSED_ENV_CONFIG:
         PROCESSED_ENV_CONFIG["OS_CREDITS_PRECISION"] = (
             Decimal(10) ** -PROCESSED_ENV_CONFIG["OS_CREDITS_PRECISION"]
+        )
+
+    if "VCPU_CREDIT_PER_HOUR" in PROCESSED_ENV_CONFIG:
+        PROCESSED_ENV_CONFIG["VCPU_CREDIT_PER_HOUR"] = (
+            Decimal(PROCESSED_ENV_CONFIG["VCPU_CREDIT_PER_HOUR"])
+        )
+
+    if "RAM_CREDIT_PER_HOUR" in PROCESSED_ENV_CONFIG:
+        PROCESSED_ENV_CONFIG["RAM_CREDIT_PER_HOUR"] = (
+            Decimal(PROCESSED_ENV_CONFIG["RAM_CREDIT_PER_HOUR"])
         )
 
     # this would be the right way but makes pytest hang forever -.-'
