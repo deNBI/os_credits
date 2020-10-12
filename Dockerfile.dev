@@ -11,7 +11,8 @@ RUN pip install --no-cache poetry
 RUN poetry config virtualenvs.create false
 # we do not need any development packages except aiohttp-devtools to
 # automatically restart the app once we changed the bind-mounted source code
-RUN poetry install --no-dev && pip install --no-cache aiohttp-devtools
+RUN cp /usr/local/lib/python3.7/site-packages/certifi/cacert.pem /cacert.pem
+RUN export REQUESTS_CA_BUNDLE=/cacert.pem && poetry install --no-dev && pip install --no-cache aiohttp-devtools
 
 EXPOSE 80
 EXPOSE 81
