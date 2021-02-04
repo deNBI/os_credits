@@ -135,9 +135,9 @@ async def credits_history_api(request: web.Request) -> web.Response:
     except KeyError:
         raise web.HTTPBadRequest(reason="No non-empty ``project_name`` provided")
     influx_client: InfluxDBClient = request.app["influx_client"]
-    time_column = ["timestamps"]
-    credits_column: List[Union[str, float]] = ["credits"]
-    metric_column = ["metrics"]
+    time_column = []
+    credits_column = []
+    metric_column = []
     result = await influx_client.query_billing_history(project_name, since=start_date)
     try:
         async for point in result:
@@ -146,12 +146,12 @@ async def credits_history_api(request: web.Request) -> web.Response:
                 if point.timestamp > end_date:
                     continue
             time_column.append(point.timestamp.strftime(datetime_format))
-            credits_column.append(float(point.credits_left))
+            credits_column.append(float(point.credits_used))
             metric_column.append(point.metric_friendly_name)
     except InfluxDBError:
         raise web.HTTPBadRequest(reason="Invalid project name")
     # check whether any data were retrieved
-    if credits_column == ["credits"]:
+    if not credits_column:
         # let's check whether the project has history at all
         if await influx_client.project_has_history(project_name):
             raise web.HTTPNoContent(reason="Try changing *_date parameters")

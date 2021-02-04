@@ -318,7 +318,7 @@ async def update_credits(
     billing_entry = BillingHistory(
         measurement=group.name,
         timestamp=current_measurement.timestamp,
-        credits_left=Credits(group.credits_granted.value - group.credits_used.value),
+        credits_used=Credits(group.credits_used.value),
         metric_name=current_measurement.metric.name,
         metric_friendly_name=current_measurement.metric.friendly_name,
     )
@@ -326,6 +326,6 @@ async def update_credits(
     await group.save()
     half_of_credits_granted = Decimal(group.credits_granted.value) / 2
     if (
-        previous_group_credits <= half_of_credits_granted < group.credits_used.value
+        previous_group_credits <= half_of_credits_granted <= group.credits_used.value
     ):
         raise HalfOfCreditsLeft(group)
