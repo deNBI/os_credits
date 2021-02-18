@@ -57,6 +57,14 @@ class InfluxDBClient(_InfluxDBClient):
             output="json",
         )
 
+    async def delete_points(self, project_name_to_delete, since_date):
+        delete_mb_template = f"delete from project_mb_usage where project_name='{project_name_to_delete}' and time > {since_date};"
+        delete_vcpu_template = f"delete from project_vcpu_usage where project_name='{project_name_to_delete}' and time > {since_date};"
+        delete_billing_template = f"delete from {project_name_to_delete} where time > {since_date};"
+        await self.query(delete_mb_template)
+        await self.query(delete_vcpu_template)
+        await self.query(delete_billing_template, db=config["CREDITS_HISTORY_DB"])
+
     async def ensure_history_db_exists(self) -> bool:
         """Checks whether the required database for credits history exists.
 

@@ -17,12 +17,30 @@ from typing import Union
 
 from aiohttp import web
 from aiohttp_jinja2 import template
+from os_credits.auth import auth_required
 
 from os_credits.credits.base_models import Metric
 from os_credits.influx.client import InfluxDBClient
 from os_credits.influx.exceptions import InfluxDBError
 from os_credits.log import internal_logger
 from os_credits.settings import config
+
+
+@auth_required
+async def delete_stuff(request: web.Request) -> web.Response:
+    influx_client: InfluxDBClient = request.app["influx_client"]
+    since_date = request.query["since_date"]
+    datetime_format = "%Y-%m-%d %H:%M:%S"
+    try:
+        since_date = datetime.strptime(since_date, datetime_format)
+    except KeyError:
+        since_date = datetime.fromtimestamp(0)
+    except ValueError:
+        raise web.HTTPBadRequest(reason="Invalid content for ``start_date``")
+    project_name = request.query["project_name"]
+    since_date = datetime.timestamp(since_date) * 1000
+    await influx_client.delete_points(project_name, since_date)
+    return web.Response(text="Done?")
 
 
 async def ping(_: web.Request) -> web.Response:
