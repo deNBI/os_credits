@@ -75,6 +75,7 @@ async def worker(name: str, app: Application) -> None:
             task_logger.info("Worker %s was cancelled when waiting for new item.", name)
             raise
         try:
+            influx_line = influx_line
             task_id = unique_identifier(influx_line)
             TASK_ID.set(task_id)
             task_logger.debug("Worker %s starting task `%s`", name, task_id)

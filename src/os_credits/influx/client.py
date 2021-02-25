@@ -39,7 +39,6 @@ with catch_warnings():
     from aioinflux.client import InfluxDBClient as _InfluxDBClient
     from aioinflux.client import InfluxDBError as _InfluxDBError
 
-
 INFLUX_QUERY_DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
 _DEFINITELY_PAST = datetime.fromtimestamp(0)
@@ -57,13 +56,58 @@ class InfluxDBClient(_InfluxDBClient):
             output="json",
         )
 
-    async def delete_points(self, project_name_to_delete, since_date):
-        delete_mb_template = f"delete from project_mb_usage where project_name='{project_name_to_delete}' and time > {since_date};"
-        delete_vcpu_template = f"delete from project_vcpu_usage where project_name='{project_name_to_delete}' and time > {since_date};"
-        delete_billing_template = f"delete from {project_name_to_delete} where time > {since_date};"
+    async def delete_mb_and_vcpu_measurements(
+        self,
+        project_name_to_delete,
+        since_date
+    ) -> Dict:
+        project_info_mb_template = f"SELECT LAST(value)," \
+                                     f"project_name, location_id " \
+                                     f"FROM project_mb_usage " \
+                                     f"where project_name='{project_name_to_delete}';"
+        project_info_vcpu_template = f"SELECT LAST(value)," \
+                                     f"project_name, location_id " \
+                                     f"FROM project_vcpu_usage " \
+                                     f"where project_name='{project_name_to_delete}';"
+        mb_info = await self.query(project_info_mb_template)
+        vcpu_info = await self.query(project_info_vcpu_template)
+        returned_timestamps = {}
+        for i in iterpoints(mb_info, lambda *x, meta: dict(zip(meta['columns'], x))):
+            returned_timestamps["project_name"] = i["project_name"]
+            returned_timestamps["location_id"] = i["location_id"]
+        for i in iterpoints(vcpu_info, lambda *x, meta: dict(zip(meta['columns'], x))):
+            returned_timestamps["project_name"] = i["project_name"]
+            returned_timestamps["location_id"] = i["location_id"]
+        if not returned_timestamps:
+            return returned_timestamps
+
+        delete_mb_template = f"delete from project_mb_usage " \
+                             f"where project_name='{project_name_to_delete}' " \
+                             f"and time > {since_date}000000000;"
+        delete_vcpu_template = f"delete from project_vcpu_usage " \
+                               f"where project_name='{project_name_to_delete}' " \
+                               f"and time > {since_date}000000000;"
         await self.query(delete_mb_template)
         await self.query(delete_vcpu_template)
-        await self.query(delete_billing_template, db=config["CREDITS_HISTORY_DB"])
+
+        last_mb_timestamp_template = f"SELECT LAST(value), time, " \
+                                     f"project_name, location_id " \
+                                     f"FROM project_mb_usage " \
+                                     f"where project_name='{project_name_to_delete}';"
+        last_vcpu_timestamp_template = f"SELECT LAST(value), time, " \
+                                       f"project_name, location_id " \
+                                       f"FROM project_vcpu_usage " \
+                                       f"where project_name='{project_name_to_delete}';"
+        last_mb = await self.query(last_mb_timestamp_template)
+        last_vcpu = await self.query(last_vcpu_timestamp_template)
+        for i in iterpoints(last_mb, lambda *x, meta: dict(zip(meta['columns'], x))):
+            returned_timestamps["last_mb"] = {}
+            returned_timestamps["last_mb"]["time"] = i["time"]/1e9
+        for i in iterpoints(last_vcpu, lambda *x, meta: dict(zip(meta['columns'], x))):
+            returned_timestamps["last_vcpu"] = {}
+            returned_timestamps["last_vcpu"]["time"] = i["time"]/1e9
+
+        return returned_timestamps
 
     async def ensure_history_db_exists(self) -> bool:
         """Checks whether the required database for credits history exists.

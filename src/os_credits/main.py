@@ -2,10 +2,6 @@ from __future__ import annotations
 
 from asyncio import Lock
 from asyncio import Queue
-from asyncio import TimeoutError
-from asyncio import create_task
-from asyncio import gather
-from asyncio import wait_for
 from collections import defaultdict
 from datetime import datetime
 from logging.config import dictConfig
@@ -21,14 +17,13 @@ from aiohttp_swagger import setup_swagger
 from jinja2 import FileSystemLoader
 from prometheus_async import aio
 
-from os_credits.credits.tasks import worker
 from os_credits.exceptions import MissingInfluxDatabase
 from os_credits.influx.client import InfluxDBClient
 from os_credits.log import internal_logger
 from os_credits.perun.requests import client_session
 from os_credits.prometheus_metrics import projects_processed_counter
 from os_credits.prometheus_metrics import tasks_queued_gauge
-from os_credits.views import application_stats, delete_stuff
+from os_credits.views import application_stats, delete_mb_and_vcpu_since
 from os_credits.views import costs_per_hour
 from os_credits.views import credits_history
 from os_credits.views import credits_history_api
@@ -36,44 +31,9 @@ from os_credits.views import get_metrics
 from os_credits.views import influxdb_write
 from os_credits.views import ping
 from os_credits.views import update_logging_config
+from os_credits.worker_helper import stop_worker, create_worker
 
 APP_ROOT = Path(__file__).parent
-
-
-async def create_worker(app: web.Application) -> None:
-    """Creates :ref:`Task Workers` to process items put into the :ref:`Task Queue`.
-
-    The amount of them can configured via ``OS_CREDITS_WORKERS``, see :ref:`Settings`.
-    """
-    app["task_workers"] = {
-        f"worker-{i}": create_task(worker(f"worker-{i}", app))
-        for i in range(app["config"]["OS_CREDITS_WORKERS"])
-    }
-    internal_logger.info("Created %d workers", len(app["task_workers"]))
-
-
-async def stop_worker(app: web.Application, queue_timeout: int = 120) -> None:
-    """Tries to shutdown all :ref:`Task Workers` gracefully by first emptying the
-    :ref:`Task Queue` before cancelling the workers.
-
-    :param app: Application instance holding the worker tasks and the task queue.
-    :param queue_timeout: Seconds to wait finish remaining tasks in queue before killing
-        task workers.
-    """
-    internal_logger.info(
-        "Waiting up to %d seconds to finish remaining tasks.", queue_timeout
-    )
-    try:
-        await wait_for(app["task_queue"].join(), timeout=queue_timeout)
-    except TimeoutError:
-        internal_logger.warning(
-            "Waited %d seconds for all remaining tasks to be processed, killing "
-            "workers now.",
-            queue_timeout,
-        )
-    for task in app["task_workers"].values():
-        task.cancel()
-    await gather(*app["task_workers"].values(), return_exceptions=True)
 
 
 async def create_client_session(app: web.Application) -> None:
@@ -153,7 +113,7 @@ async def create_app(
     app = web.Application()
     app.add_routes(
         [
-            web.get("/delete", delete_stuff),
+            web.get("/delete", delete_mb_and_vcpu_since),
             web.get(
                 "/api/credits_history/{project_name}",
                 credits_history_api,
