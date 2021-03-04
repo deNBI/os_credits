@@ -3,7 +3,7 @@ FROM python:3.9.2-alpine as builder
 ADD src /code/src
 ADD pyproject.toml poetry.lock /code/
 WORKDIR /code
-RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev
+RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo
 RUN pip install poetry && poetry build -f wheel
 
 # by using a build container we prevent us from carrying around poetry

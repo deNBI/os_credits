@@ -9,6 +9,7 @@ services:
       - MAIL_SMTP_SERVER=smtp_server
       - MAIL_NOT_STARTTLS=1
       - INFLUXDB_HOST=influxdb
+      - API_KEY
     ports:
       - "8002:80"
     depends_on:

@@ -11,18 +11,85 @@ from json import loads
 from traceback import format_stack
 from typing import Any
 from typing import Dict
-from typing import List
 from typing import Optional
-from typing import Union
 
 from aiohttp import web
 from aiohttp_jinja2 import template
+from os_credits.auth import auth_required
 
 from os_credits.credits.base_models import Metric
 from os_credits.influx.client import InfluxDBClient
 from os_credits.influx.exceptions import InfluxDBError
 from os_credits.log import internal_logger
+from os_credits.perun.exceptions import GroupNotExistsError
 from os_credits.settings import config
+from os_credits.worker_helper import stop_worker, create_worker
+from os_credits.perun.group import Group
+
+
+@auth_required
+async def delete_mb_and_vcpu_since(request: web.Request) -> web.Response:
+    await stop_worker(request.app, 500)
+    try:
+        influx_client: InfluxDBClient = request.app["influx_client"]
+        since_date = request.query["since_date"]
+        datetime_format = "%Y-%m-%d %H:%M:%S"
+        try:
+            since_date = datetime.strptime(since_date, datetime_format)
+        except KeyError:
+            since_date = datetime.fromtimestamp(0)
+        except ValueError:
+            raise web.HTTPBadRequest(reason="Invalid content for ``start_date``")
+        project_name = request.query["project_name"]
+        since_date = int(since_date.timestamp())
+        last_timestamps = await influx_client.delete_mb_and_vcpu_measurements(
+            project_name,
+            since_date
+        )
+
+        if "project_name" not in last_timestamps \
+                or "location_id" not in last_timestamps:
+            raise KeyError(f"Could not find group {project_name} in influxdb!")
+
+        perun_group = Group(last_timestamps["project_name"],
+                            int(last_timestamps["location_id"]))
+        await perun_group.connect()
+        last_mb = last_timestamps.get("last_mb", None)
+        if last_mb:
+            perun_group.credits_timestamps.value[
+                "project_mb_usage"
+            ] = datetime.fromtimestamp(last_timestamps["last_mb"]["time"])
+        else:
+            perun_group.credits_timestamps.value[
+                "project_mb_usage"
+            ] = datetime.now()
+        last_vcpu = last_timestamps.get("last_vcpu", None)
+        if last_vcpu:
+            perun_group.credits_timestamps.value[
+                "project_vcpu_usage"
+            ] = datetime.fromtimestamp(last_timestamps["last_vcpu"]["time"])
+        else:
+            perun_group.credits_timestamps.value[
+                "project_vcpu_usage"
+            ] = datetime.now()
+        await perun_group.save()
+
+    except GroupNotExistsError as e:
+        internal_logger.warning(
+            "Could not resolve group with name `%s` against perun. %r",
+            perun_group.name, e
+        )
+        return web.HTTPException()
+
+    except Exception as e:
+        internal_logger.exception(f"Exception when deleting value history:\n"
+                                  f"{e}")
+        return web.HTTPException()
+
+    finally:
+        await create_worker(request.app)
+
+    return web.json_response(last_timestamps)
 
 
 async def ping(_: web.Request) -> web.Response:
@@ -306,7 +373,7 @@ async def update_logging_config(request: web.Request) -> web.Response:
         logging.config.dictConfig(logging_config)
     except Exception as e:
         raise web.HTTPBadRequest(reason=str(e))
-    raise web.HTTPNoContent()
+    return web.HTTPNoContent()
 
 
 # Usage of class-based views would be nicer, unfortunately not yet supported by
@@ -391,11 +458,11 @@ async def costs_per_hour(request: web.Request) -> web.Response:
         machine_specs = await request.json()
     except JSONDecodeError:
         raise web.HTTPBadRequest(reason="Invalid JSON")
-    costs_per_hour = Decimal(0)
+    returned_costs_per_hour = Decimal(0)
     for friendly_name, spec in machine_specs.items():
         try:
             spec = Decimal(spec)
-            costs_per_hour += Metric.metrics_by_friendly_name[
+            returned_costs_per_hour += Metric.metrics_by_friendly_name[
                 friendly_name
             ].costs_per_hour(spec)
         except KeyError:
@@ -405,5 +472,5 @@ async def costs_per_hour(request: web.Request) -> web.Response:
                 reason=f"Parameter {friendly_name} had wrong type."
             )
     return web.json_response(
-        float(costs_per_hour.quantize(config["OS_CREDITS_PRECISION"]))
+        float(returned_costs_per_hour.quantize(config["OS_CREDITS_PRECISION"]))
     )
