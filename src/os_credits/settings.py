@@ -152,6 +152,10 @@ class Config(TypedDict):
         Cost of running one GB of RAM for one hour.
 
         Default: ``0.3``
+
+    .. envvar:: API_KEY
+
+        X-API-KEY to use for authentication protected endpoints.
     """
 
     CLOUD_GOVERNANCE_MAIL: str
@@ -177,6 +181,7 @@ class Config(TypedDict):
     OS_CREDITS_WORKERS: int
     VCPU_CREDIT_PER_HOUR: Decimal
     RAM_CREDIT_PER_HOUR: Decimal
+    API_KEY: str
 
 
 default_config = Config(
@@ -202,6 +207,7 @@ default_config = Config(
     OS_CREDITS_WORKERS=10,
     VCPU_CREDIT_PER_HOUR=Decimal(1),
     RAM_CREDIT_PER_HOUR=Decimal("0.3"),
+    API_KEY=""
 )
 
 

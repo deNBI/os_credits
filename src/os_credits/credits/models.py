@@ -80,9 +80,8 @@ class BillingHistory(InfluxDBPoint):
     See :ref:`Credits History`.
     """
 
-    credits_left: Credits
-    """Amount of credits left for the project **after** the billing. Calculated via
-    ``credits_granted - credits_used``
+    credits_used: Credits
+    """Amount of credits used for the project **after** the billing.
     """
     metric_name: str = field(metadata={"tag": True})
     """Name of the metric of the measurement which caused the billing.

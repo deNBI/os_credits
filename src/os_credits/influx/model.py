@@ -35,13 +35,13 @@ class InfluxDBPoint:
     >>> from os_credits.influx.model import InfluxDBPoint
     >>> @dataclass(frozen=True)
     ... class Weather(InfluxDBPoint):
-    ...     location: str = field(metadata={'tag': True})
     ...     temperature: int
+    ...     location: str = field(metadata={'tag': True})
     ...     static_id: int = 5
     >>> from datetime import datetime
     >>> timestamp = datetime(2016, 6, 13, 19, 43, 50, 100400)
     >>> # the first two parameters are defined inside ``InfluxDBPoint``
-    >>> weather = Weather('weather', timestamp, 'us-midwest', 82)
+    >>> weather = Weather('weather', timestamp, 82, 'us-midwest')
     >>> print(weather.to_lineprotocol())
     b'weather,location=us-midwest temperature=82 1465839830100399872'
     >>> Weather.from_lineprotocol(weather.to_lineprotocol()) == weather
@@ -67,7 +67,7 @@ class InfluxDBPoint:
     timestamp: datetime
 
     @classmethod
-    def from_iterpoint(cls: Type[PT], values: List[Any], meta: Dict[str, str]) -> PT:
+    def from_iterpoint(cls: Type[PT], *values: List[Any], meta: Dict[str, str]) -> PT:
         """Only intended to be passed to the ``iterpoints`` method of ``aioinflux`` to
         parse the points and construct valid InfluxDBPoint instances. See its
         documentation for a description of the contents of ``values`` and ``meta``.
