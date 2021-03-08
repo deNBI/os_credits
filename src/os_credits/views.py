@@ -34,62 +34,88 @@ async def delete_mb_and_vcpu_since(request: web.Request) -> web.Response:
         influx_client: InfluxDBClient = request.app["influx_client"]
         since_date = request.query["since_date"]
         datetime_format = "%Y-%m-%d %H:%M:%S"
-        try:
-            since_date = datetime.strptime(since_date, datetime_format)
-        except KeyError:
-            since_date = datetime.fromtimestamp(0)
-        except ValueError:
-            raise web.HTTPBadRequest(reason="Invalid content for ``start_date``")
-        project_name = request.query["project_name"]
+        since_date = datetime.strptime(since_date, datetime_format)
+        project_names = request.query["project_names"]
+        project_names = project_names.split(",")
         since_date = int(since_date.timestamp())
-        last_timestamps = await influx_client.delete_mb_and_vcpu_measurements(
-            project_name,
-            since_date
-        )
-
-        if "project_name" not in last_timestamps \
-                or "location_id" not in last_timestamps:
-            raise KeyError(f"Could not find group {project_name} in influxdb!")
-
-        perun_group = Group(last_timestamps["project_name"],
-                            int(last_timestamps["location_id"]))
-        await perun_group.connect()
-        last_mb = last_timestamps.get("last_mb", None)
-        if last_mb:
-            perun_group.credits_timestamps.value[
-                "project_mb_usage"
-            ] = datetime.fromtimestamp(last_timestamps["last_mb"]["time"])
-        else:
-            perun_group.credits_timestamps.value[
-                "project_mb_usage"
-            ] = datetime.now()
-        last_vcpu = last_timestamps.get("last_vcpu", None)
-        if last_vcpu:
-            perun_group.credits_timestamps.value[
-                "project_vcpu_usage"
-            ] = datetime.fromtimestamp(last_timestamps["last_vcpu"]["time"])
-        else:
-            perun_group.credits_timestamps.value[
-                "project_vcpu_usage"
-            ] = datetime.now()
-        await perun_group.save()
-
-    except GroupNotExistsError as e:
-        internal_logger.warning(
-            "Could not resolve group with name `%s` against perun. %r",
-            perun_group.name, e
-        )
-        return web.HTTPException()
-
-    except Exception as e:
-        internal_logger.exception(f"Exception when deleting value history:\n"
+    except KeyError as e:
+        internal_logger.exception(f"Exception when getting request information for "
+                                  f"deleting value history:\n"
                                   f"{e}")
-        return web.HTTPException()
-
-    finally:
         await create_worker(request.app)
+        return web.HTTPException(text="Key Error.")
+    except ValueError as e:
+        internal_logger.exception(f"Exception when getting request information for "
+                                  f"deleting value history:\n"
+                                  f"{e}")
+        await create_worker(request.app)
+        return web.HTTPException(text="Value Error.")
+    except Exception as e:
+        internal_logger.exception(f"Exception when getting request information for "
+                                  f"deleting value history:\n"
+                                  f"{e}")
+        await create_worker(request.app)
+        return web.HTTPException(text="Exception.")
 
-    return web.json_response(last_timestamps)
+    return_list = []
+    internal_logger.info(f"Trying to delete usage values for project: {project_names} "
+                         f"since {since_date}.")
+    for project_name in project_names:
+        try:
+            last_timestamps = await influx_client.delete_mb_and_vcpu_measurements(
+                project_name,
+                since_date
+            )
+
+            if "project_name" not in last_timestamps \
+                    or "location_id" not in last_timestamps:
+                internal_logger.info(f"Could not find group {project_name} in "
+                                     f"influxdb!")
+                return_list.append({"error": f"Could not find '{project_name}' "
+                                             f"in influxdb."})
+                continue
+            perun_group = Group(last_timestamps["project_name"],
+                                int(last_timestamps["location_id"]))
+            await perun_group.connect()
+            last_mb = last_timestamps.get("last_mb", None)
+            if last_mb:
+                perun_group.credits_timestamps.value[
+                    "project_mb_usage"
+                ] = datetime.fromtimestamp(last_timestamps["last_mb"]["time"])
+            else:
+                perun_group.credits_timestamps.value[
+                    "project_mb_usage"
+                ] = datetime.now()
+            last_vcpu = last_timestamps.get("last_vcpu", None)
+            if last_vcpu:
+                perun_group.credits_timestamps.value[
+                    "project_vcpu_usage"
+                ] = datetime.fromtimestamp(last_timestamps["last_vcpu"]["time"])
+            else:
+                perun_group.credits_timestamps.value[
+                    "project_vcpu_usage"
+                ] = datetime.now()
+            await perun_group.save()
+            internal_logger.info(f"Deleted values and set timestamps for "
+                                 f"'{project_name}' with {last_timestamps}.")
+            return_list.append(last_timestamps)
+        except GroupNotExistsError as e:
+            internal_logger.warning(
+                "Could not resolve group with name `%s` against perun. %r",
+                project_name, e
+            )
+            return_list.append({"error": f"Could not find perun group "
+                                         f"'{project_name}'."})
+            continue
+        except Exception as e:
+            internal_logger.exception(f"Exception when deleting value history:\n"
+                                      f"{e}")
+            return_list.append({"error": f"Could not delete values for "
+                                         f"'{project_name}'."})
+            continue
+
+    await create_worker(request.app)
+    return web.json_response(return_list)
 
 
 async def ping(_: web.Request) -> web.Response:
