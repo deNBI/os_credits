@@ -23,7 +23,9 @@ from os_credits.log import internal_logger
 from os_credits.perun.requests import client_session
 from os_credits.prometheus_metrics import projects_processed_counter
 from os_credits.prometheus_metrics import tasks_queued_gauge
-from os_credits.views import application_stats, delete_mb_and_vcpu_since
+from os_credits.views import application_stats, \
+    delete_mb_and_vcpu_since, \
+    delete_credits_left
 from os_credits.views import costs_per_hour
 from os_credits.views import credits_history
 from os_credits.views import credits_history_api
@@ -114,6 +116,7 @@ async def create_app(
     app.add_routes(
         [
             web.get("/delete", delete_mb_and_vcpu_since),
+            web.get("/delete_credits_left", delete_credits_left),
             web.get(
                 "/api/credits_history/{project_name}",
                 credits_history_api,

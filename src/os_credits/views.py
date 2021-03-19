@@ -28,7 +28,16 @@ from os_credits.perun.group import Group
 
 
 @auth_required
+async def delete_credits_left(request: web.Request) -> web.Response:
+    internal_logger.info(f"Called: {request.rel_url}")
+    influx_client: InfluxDBClient = request.app["influx_client"]
+    deleted_from_projects = await influx_client.delete_credits_left_measurements()
+    return web.json_response(deleted_from_projects)
+
+
+@auth_required
 async def delete_mb_and_vcpu_since(request: web.Request) -> web.Response:
+    internal_logger.info(f"Called: {request.rel_url}")
     await stop_worker(request.app, 500)
     try:
         influx_client: InfluxDBClient = request.app["influx_client"]
@@ -137,6 +146,7 @@ async def ping(_: web.Request) -> web.Response:
         405:
             description: invalid HTTP Method
     """
+    internal_logger.info(f"Called: {_.rel_url}")
     return web.Response(text="Pong")
 
 
@@ -201,6 +211,7 @@ async def credits_history_api(request: web.Request) -> web.Response:
       404:
         description: Could not find any history data.
     """
+    internal_logger.info(f"Called: {request.rel_url}")
     datetime_format = "%Y-%m-%d %H:%M:%S"
     try:
         start_date = datetime.strptime(request.query["start_date"], datetime_format)
@@ -261,6 +272,7 @@ async def credits_history(request: web.Request) -> Dict[str, Any]:
     To generate test entries take a look at ``bin/generate_credits_history.py`` at the
     root of this project.
     """
+    internal_logger.info(f"Called: {request.rel_url}")
     return {"project_name": request.match_info["project_name"]}
 
 
@@ -294,6 +306,7 @@ async def influxdb_write(request: web.Request) -> web.Response:
           for further information
     """  # noqa (cannot fix long url)
     # .text() performs automatic decoding from bytes
+    internal_logger.info(f"Called: {request.rel_url}")
     influxdb_lines = await request.text()
     # an unknown number of lines will be send, put them all into the queue
     for influx_line in influxdb_lines.splitlines():
@@ -361,6 +374,7 @@ async def application_stats(request: web.Request) -> web.Response:
                   type: str
                   description: State of the group/project async-lock
     """
+    internal_logger.info(f"Called: {request.rel_url}")
     stats = {
         "number_of_workers": config["OS_CREDITS_WORKERS"],
         "queue_size": request.app["task_queue"].qsize(),
@@ -390,6 +404,7 @@ async def update_logging_config(request: web.Request) -> web.Response:
     """
     Possibility to update logging configuration without restart
     """
+    internal_logger.info(f"Called: {request.rel_url}")
     logging_json_text = await request.text()
     try:
         logging_config = loads(logging_json_text)
@@ -441,6 +456,7 @@ async def get_metrics(_: web.Request) -> web.Response:
                   type: str
                   description: Human readable name of the metric.
     """
+    internal_logger.info(f"Called: {_.rel_url}")
     metric_information = {
         friendly_name: metric.api_information()
         for friendly_name, metric in Metric.metrics_by_friendly_name.items()
@@ -480,6 +496,7 @@ async def costs_per_hour(request: web.Request) -> web.Response:
         schema:
           type: float
     """
+    internal_logger.info(f"Called: {request.rel_url}")
     try:
         machine_specs = await request.json()
     except JSONDecodeError:
