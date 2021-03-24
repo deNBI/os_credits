@@ -56,6 +56,42 @@ class InfluxDBClient(_InfluxDBClient):
             output="json",
         )
 
+    async def delete_credits_left_measurements(self) -> Dict:
+        deleted_from_list = {"deleted_from": [], "not_deleted_from": []}
+        show_measurements_template = "show measurements"
+        credits_history = config["CREDITS_HISTORY_DB"]
+        all_measurements = await self.query(
+            show_measurements_template,
+            db=credits_history)
+        get_time_template = "SELECT first(credits_used) FROM {measurement} " \
+                            "where credits_used >= 0"
+        delete_template = "DELETE FROM {measurement} where time < {time}"
+        for measurement_point in iterpoints(all_measurements,
+                                            lambda *x,
+                                            meta: dict(zip(meta['columns'], x))
+                                            ):
+            try:
+                measurement_name = measurement_point["name"]
+                time = await self.query(
+                    get_time_template.format(measurement=measurement_name),
+                    db=credits_history)
+                for time_point in iterpoints(
+                    time,
+                    lambda *x,
+                    meta: dict(zip(meta['columns'], x))
+                ):
+                    await self.query(
+                        delete_template.format(
+                            measurement=measurement_name,
+                            time=time_point["time"]
+                        )
+                    )
+                    deleted_from_list["deleted_from"].append(measurement_name)
+            except (ValueError, KeyError, Exception) as e:
+                influxdb_logger.exception(e)
+                deleted_from_list["not_deleted_from"].append(measurement_point)
+        return deleted_from_list
+
     async def delete_mb_and_vcpu_measurements(
         self,
         project_name_to_delete,
