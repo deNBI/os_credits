@@ -226,9 +226,9 @@ class HalfOfCreditsLeft(EmailNotificationBase):
     to = {EmailRecipient.PROJECT_MAINTAINERS}
     cc = {EmailRecipient.CLOUD_GOVERNANCE}
     body_template = """
-Dear Project Maintainer,
+Dear user,
 
-Your Project ${project} in the de.NBI Cloud has used $credits_used Cloud Credits of its granted $credits_granted Cloud Credits 
+Your project ${project} in the de.NBI Cloud has used $credits_used Cloud Credits of its granted $credits_granted Cloud Credits 
 and therefore less than 50% of its granted Cloud Credits left. 
 To view a history of your credits please login at the Cloud Portal under https://cloud.denbi.de/portal. 
 
