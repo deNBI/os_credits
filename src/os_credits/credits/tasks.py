@@ -326,6 +326,6 @@ async def update_credits(
     await group.save()
     half_of_credits_granted = Decimal(group.credits_granted.value) / 2
     if (
-        previous_group_credits <= half_of_credits_granted <= group.credits_used.value
+        previous_group_credits < half_of_credits_granted <= group.credits_used.value
     ):
         raise HalfOfCreditsLeft(group)
