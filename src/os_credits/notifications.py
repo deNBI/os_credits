@@ -226,18 +226,21 @@ class HalfOfCreditsLeft(EmailNotificationBase):
     to = {EmailRecipient.PROJECT_MAINTAINERS}
     cc = {EmailRecipient.CLOUD_GOVERNANCE}
     body_template = """
-Dear Project Maintainer,
+Dear user,
 
-Your OpenStack Project ${project} in the de.NBI Cloud has less than 50%
-($credits_used/$credits_granted) of its credits left. To view a history of your credits
-please login at the Cloud Portal under https://cloud.denbi.de/portal.
+Your project ${project} in the de.NBI Cloud has used $credits_used Cloud Credits of its granted $credits_granted Cloud Credits 
+and therefore less than 50% of its granted Cloud Credits left. 
+To view a history of your credits please login at the Cloud Portal under https://cloud.denbi.de/portal. 
+
+For more information about Cloud Credits, its calculation and how to request more Cloud Credits please visit: 
+ - https://cloud.denbi.de/wiki/portal/credits/
+
+We also offer a Cloud Credits calculator which you may use to test different flavor/lifetime/CCs configurations which you will find at:
+ - https://cloud.denbi.de/creditscalculator/
 
 Have a nice day,
 Your de.NBI Cloud Governance
 
-----
-This is an automatically generated message, please do not respond to it directly.
-Use contact@denbi.de instead.
 """
 
     def __init__(self, group: Group) -> None:
