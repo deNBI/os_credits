@@ -3,6 +3,7 @@ on:
   push:
     branches: 
       - 'dev'
+      - 'staging'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,6 +13,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBSECRET2 }}
     - uses: actions/checkout@master
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master 
       with:
@@ -19,4 +24,4 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: Dockerfile
-        tags: "dev" 
+        tags:   ${{ steps.extract_branch.outputs.branch }}
