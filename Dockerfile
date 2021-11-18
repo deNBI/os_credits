@@ -1,4 +1,4 @@
-FROM python:3.10.0-alpine as builder
+FROM python:3.9.4-alpine as builder
 
 ADD src /code/src
 ADD pyproject.toml poetry.lock /code/
