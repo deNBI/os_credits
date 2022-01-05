@@ -28,6 +28,6 @@
   "branchPrefix": "deps/",
   "bumpVersion": "minor",
   "rebaseWhen": "behind-base-branch",	
-  "commitBodyTable" "true",
+  "commitBodyTable": "true",
   "commitMessagePrefix": "feat(Dependencies):"
 }
