@@ -8,7 +8,7 @@ RUN pip install poetry && poetry build -f wheel
 
 # by using a build container we prevent us from carrying around poetry
 # alongside its dependencies
-FROM python:3.10.0-alpine
+FROM python:3.10.1-alpine
 ARG OS_CREDITS_VERSION
 ARG WHEEL_NAME=os_credits-1.1.0-py3-none-any.whl
 EXPOSE 80
