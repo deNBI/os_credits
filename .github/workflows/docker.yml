@@ -1,9 +1,5 @@
 name: Publish Dev Docker
-on: 
-  push:
-    branches: 
-      - 'dev'
-      - 'staging'
+on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
