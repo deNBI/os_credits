@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from dataclasses import field
-from decimal import Decimal
 from typing import AnyStr
 from typing import Type
 
