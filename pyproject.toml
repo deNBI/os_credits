@@ -16,7 +16,7 @@ mypy_extensions = "0.4.3"
 
 [tool.poetry.dev-dependencies]
 aiohttp-devtools = "0.13.1"
-pytest = "6.2.2"
+pytest = "6.2.5"
 pytest-aiohttp = "0.3.0"
 pre-commit = "2.10.1"
 black = {version = "20.8b1",allow-prereleases = true}
