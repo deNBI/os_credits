@@ -34,7 +34,7 @@ watchgod = ">=0.2"
 
 [[package]]
 name = "aiohttp-jinja2"
-version = "1.1.0"
+version = "1.1.2"
 description = "jinja2 template renderer for aiohttp.web (http server for asyncio)"
 category = "main"
 optional = false
@@ -42,7 +42,7 @@ python-versions = ">=3.5.3"
 
 [package.dependencies]
 aiohttp = ">=3.2.0"
-jinja2 = ">=2.7"
+jinja2 = ">=2.10.1"
 
 [[package]]
 name = "aiohttp-swagger"
@@ -1178,7 +1178,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c786dac17fabe45e336b2416b056339a5cd6a9b73763250469518dc337d0a4fc"
+content-hash = "c30c0d48a9ba849cfe32f241b328d90340a9c1a2158dbf4190be8f42411d8737"
 
 [metadata.files]
 aiohttp = [
@@ -1225,8 +1225,8 @@ aiohttp-devtools = [
     {file = "aiohttp_devtools-0.13.1-py35.py36.py37-none-any.whl", hash = "sha256:70dbab32e2234296ddc995cacc06acf6b7ee2cf2ac1be62d4e12e0d333e63f00"},
 ]
 aiohttp-jinja2 = [
-    {file = "aiohttp-jinja2-1.1.0.tar.gz", hash = "sha256:aef9b6595f962182ad00c990095fb51d731c280e1d183e2b28cf0bdb5a942d0c"},
-    {file = "aiohttp_jinja2-1.1.0-py3-none-any.whl", hash = "sha256:dc9ed2914eb565b4dd00afb6acec9838594973ec3943088d9ee93fb5a2c12120"},
+    {file = "aiohttp-jinja2-1.1.2.tar.gz", hash = "sha256:4569ba360dbef2f6e2edfcb1eb34452e85498b7e17740baa5a4adc296ac3973c"},
+    {file = "aiohttp_jinja2-1.1.2-py3-none-any.whl", hash = "sha256:93d0df00fcfdf878b492261d8c95b7a6b393f8b04a47f8faa0fdc7ac8cf66cd3"},
 ]
 aiohttp-swagger = [
     {file = "aiohttp-swagger-1.0.15.tar.gz", hash = "sha256:9ff0e7b55896abe824425dceea4574c414c4dfbe906d1353ff748f0a62e48cbe"},

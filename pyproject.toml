@@ -10,7 +10,7 @@ aiohttp = "3.7.4.post0"
 aioinflux = "0.9.0"
 aiohttp-swagger = "1.0.15"
 prometheus_async = {version = "19.2",extras = ["aiohttp"]}
-aiohttp_jinja2 = "1.1"
+aiohttp_jinja2 = "1.1.2"
 aiosmtplib = "1.1.4"
 mypy_extensions = "0.4.3"
 
