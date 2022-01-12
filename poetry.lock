@@ -81,7 +81,7 @@ test = ["pytest", "pytest-asyncio", "pytest-cov", "pyyaml", "pytz", "flake8", "p
 
 [[package]]
 name = "aiosmtplib"
-version = "1.1.4"
+version = "1.1.6"
 description = "asyncio SMTP client"
 category = "main"
 optional = false
@@ -1178,7 +1178,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c30c0d48a9ba849cfe32f241b328d90340a9c1a2158dbf4190be8f42411d8737"
+content-hash = "950952abd7ecdf97d6cab8c33e94c70ec618435f0724ad648afa2a2384bf4970"
 
 [metadata.files]
 aiohttp = [
@@ -1236,8 +1236,8 @@ aioinflux = [
     {file = "aioinflux-0.9.0.tar.gz", hash = "sha256:720d056a9069ac3688f83b35786b234c890afb7c9a379eb421e5379e1eabc5cb"},
 ]
 aiosmtplib = [
-    {file = "aiosmtplib-1.1.4-py3-none-any.whl", hash = "sha256:93e53edac183f1a608bc34464efeef23902e59e949017b1682014f59ecdcd37d"},
-    {file = "aiosmtplib-1.1.4.tar.gz", hash = "sha256:8270d0a06475aa05b9276fc954fbd08a1f6c59d0452b4899413d8bca1db24541"},
+    {file = "aiosmtplib-1.1.6-py3-none-any.whl", hash = "sha256:84174765778b2c5e0e207fbce0a769202fcf0c3de81faa87cc03551a6333bfa9"},
+    {file = "aiosmtplib-1.1.6.tar.gz", hash = "sha256:d138fe6ffecbc9e6320269690b9ac0b75e540ef96e8f5c77d4a306760014dce2"},
 ]
 alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
