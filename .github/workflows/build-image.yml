@@ -1,0 +1,18 @@
+name: build-image
+on: pull_request
+jobs:
+    build-test:
+        
+        runs-on: self-hosted
+        steps:
+            - name: Workflow run cleanup action
+              uses: rokroskar/workflow-run-cleanup-action@v0.3.3
+              env:
+                GITHUB_TOKEN: "${{ secrets.GITHUBSECRET2 }}"
+            - uses: actions/checkout@v2.4.0
+            - name: Build with retry
+              uses: Wandalen/wretry.action@v1.0.11
+              with:
+                command: docker build --no-cache  . 
+                attempt_limit: 3
+                attempt_delay: 5000
