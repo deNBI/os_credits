@@ -8,7 +8,7 @@ authors = ["gilbus"]
 python = "^3.9"
 aiohttp = "3.7.3"
 aioinflux = "0.9.0"
-aiohttp-swagger = "1.0.15"
+aiohttp-swagger = "1.0.16"
 prometheus_async = {version = "19.2",extras = ["aiohttp"]}
 aiohttp_jinja2 = "1.1"
 aiosmtplib = "1.1.4"
