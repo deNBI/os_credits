@@ -824,7 +824,7 @@ werkzeug = ">=0.10"
 
 [[package]]
 name = "pytest-mypy"
-version = "0.8.0"
+version = "0.8.1"
 description = "Mypy static type checker plugin for Pytest"
 category = "dev"
 optional = false
@@ -1169,7 +1169,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "aaa0c572ae948ff7d1ae063b52649fcfeaf5e8998a284524b5c4c9bf3215ee7b"
+content-hash = "528e7bb86024d309b56ea916f516ea6fb9ae3edd9a2ce54dccbf7716f9f4d2af"
 
 [metadata.files]
 aiohttp = [
@@ -1775,8 +1775,8 @@ pytest-localserver = [
     {file = "pytest_localserver-0.5.1.post0-py3-none-any.whl", hash = "sha256:b3ff1b8bade571d54701bad3efd68ca1bb463ad88daa75da15cc8842809659ea"},
 ]
 pytest-mypy = [
-    {file = "pytest-mypy-0.8.0.tar.gz", hash = "sha256:63d418a4fea7d598ac40b659723c00804d16a251d90a5cfbca213eeba5aaf01c"},
-    {file = "pytest_mypy-0.8.0-py3-none-any.whl", hash = "sha256:8d2112972c1debf087943f48963a0daf04f3424840aea0cf437cc97053b1b0ef"},
+    {file = "pytest-mypy-0.8.1.tar.gz", hash = "sha256:1fa55723a4bf1d054fcba1c3bd694215a2a65cc95ab10164f5808afd893f3b11"},
+    {file = "pytest_mypy-0.8.1-py3-none-any.whl", hash = "sha256:6e68e8eb7ceeb7d1c83a1590912f784879f037b51adfb9c17b95c6b2fc57466b"},
 ]
 python-dotenv = [
     {file = "python-dotenv-0.15.0.tar.gz", hash = "sha256:587825ed60b1711daea4832cf37524dfd404325b7db5e25ebe88c495c9f807a0"},
