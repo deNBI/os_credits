@@ -10,7 +10,7 @@ RUN pip install poetry && poetry build -f wheel
 # alongside its dependencies
 FROM python:3.10.1-alpine
 ARG OS_CREDITS_VERSION
-ARG WHEEL_NAME=os_credits-1.1.0-py3-none-any.whl
+ARG WHEEL_NAME=os_credits-1.2.0-py3-none-any.whl
 EXPOSE 80
 ENV CREDITS_PORT 80
 ENV CREDITS_HOST 0.0.0.0
