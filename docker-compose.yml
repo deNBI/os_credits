@@ -33,7 +33,7 @@ services:
       start_period: 5s
 
   smtp_server:
-    image: "python:3.7-alpine"
+    image: "python:3.10-alpine"
     command: python3 -m smtpd -n -c DebuggingServer
     expose:
       - "25"
