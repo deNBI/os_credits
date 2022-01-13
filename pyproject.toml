@@ -15,14 +15,14 @@ aiosmtplib = "1.1.6"
 mypy_extensions = "0.4.3"
 
 [tool.poetry.dev-dependencies]
-aiohttp-devtools = "0.13.1"
+aiohttp-devtools = "1.0.post0"
 pytest = "6.2.5"
 pytest-aiohttp = "0.3.0"
 pre-commit = "2.16.0"
 black = {version = "20.8b1",allow-prereleases = true}
-mypy = "0.800"
-sphinx = "3.5.4"
-sphinx-autodoc-typehints = "1.11.1"
+sphinx-autodoc-typehints = "1.15.2"
+mypy = "0.931"
+sphinx = "4.3.2"
 pytest-localserver = "0.5.1.post0"
 pytest-cov = "3.0.0"
 sphinxcontrib-trio = "1.1.2"

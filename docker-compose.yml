@@ -19,7 +19,7 @@ services:
       - "./src:/code/src:ro"
 
   influxdb:
-    image: "influxdb:1.7-alpine"
+    image: "influxdb:1.8-alpine"
     container_name: portal_influxdb
     environment:
       - INFLUXDB_REPORTING_DISABLED=true
