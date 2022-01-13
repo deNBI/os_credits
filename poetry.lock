@@ -20,14 +20,14 @@ speedups = ["aiodns", "brotli", "cchardet"]
 
 [[package]]
 name = "aiohttp-devtools"
-version = "0.13.1"
+version = "1.0.post0"
 description = "Dev tools for aiohttp"
 category = "dev"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 
 [package.dependencies]
-aiohttp = ">=3.5.0"
+aiohttp = ">=3.8.0"
 click = ">=6.6"
 devtools = ">=0.5"
 Pygments = ">=2.2.0"
@@ -1209,7 +1209,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f174c9ecdcac574b4edac66e4663c840bb25f31e9e847ce35111063dd08ad4f4"
+content-hash = "eeb4b364d0c958ad989439b164612e2588a69f34a935f3e689fd7b563d777ea7"
 
 [metadata.files]
 aiohttp = [
@@ -1287,8 +1287,8 @@ aiohttp = [
     {file = "aiohttp-3.8.1.tar.gz", hash = "sha256:fc5471e1a54de15ef71c1bc6ebe80d4dc681ea600e68bfd1cbce40427f0b7578"},
 ]
 aiohttp-devtools = [
-    {file = "aiohttp-devtools-0.13.1.tar.gz", hash = "sha256:da9490c56671ed3920ceb98fc558065dec573c771ca17d500467b245b63f0f9d"},
-    {file = "aiohttp_devtools-0.13.1-py35.py36.py37-none-any.whl", hash = "sha256:70dbab32e2234296ddc995cacc06acf6b7ee2cf2ac1be62d4e12e0d333e63f00"},
+    {file = "aiohttp-devtools-1.0.post0.tar.gz", hash = "sha256:f46a87b250a84bf8edca21c8b6991dc2b6145cdf0af8a08b73f5c92d48d85f01"},
+    {file = "aiohttp_devtools-1.0.post0-py37.py38.py39.py310-none-any.whl", hash = "sha256:1847ce92e6e8ca1ed5dc603864f4faecdfa40b6b5aeb5193f05cafd28d3ce3e3"},
 ]
 aiohttp-jinja2 = [
     {file = "aiohttp-jinja2-1.5.tar.gz", hash = "sha256:7c3ba5eac060b691f4e50534af2d79fca2a75712ebd2b25e6fcb1295859f910b"},

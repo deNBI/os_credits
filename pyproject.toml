@@ -15,7 +15,7 @@ aiosmtplib = "1.1.6"
 mypy_extensions = "0.4.3"
 
 [tool.poetry.dev-dependencies]
-aiohttp-devtools = "0.13.1"
+aiohttp-devtools = "1.0.post0"
 pytest = "6.2.5"
 pytest-aiohttp = "0.3.0"
 pre-commit = "2.16.0"
