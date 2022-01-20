@@ -17,7 +17,7 @@ mypy_extensions = "0.4.3"
 [tool.poetry.dev-dependencies]
 aiohttp-devtools = "1.0.post0"
 pytest = "6.2.5"
-pytest-aiohttp = "0.3.0"
+pytest-aiohttp = "1.0.1"
 pre-commit = "2.16.0"
 black = {version = "20.8b1",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.15.3"
