@@ -74,7 +74,7 @@ DEFAULT_LOGGING_CONFIG = {
             "format": "[%(levelname)s] %(asctime)s %(name)s %(funcName)s:%(lineno)d: %(message)s"
         },
     },
-    "filters": {"task_id_filter": {"()": "src.os_credits.log.TaskIdFilter"}},
+    "filters": {"task_id_filter": {"()": "os_credits.log.TaskIdFilter"}},
     "handlers": {
         "with_task_id": {
             "class": "logging.StreamHandler",
