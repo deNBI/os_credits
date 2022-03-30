@@ -10,9 +10,9 @@ from typing import Optional
 
 from aiohttp import web
 
-from src.os_credits.db_client.client import TimescaleDBManager
-from src.os_credits.log import views_logger
-from src.os_credits.settings import config
+from os_credits.db_client.client import TimescaleDBManager
+from os_credits.log import views_logger
+from os_credits.settings import config
 
 _DEFINITELY_PAST = datetime.min
 _DEFINITELY_END = datetime.max

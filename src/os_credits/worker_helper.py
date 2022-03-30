@@ -1,6 +1,6 @@
 import asyncio
 
-from src.os_credits.db_client.tasks import consumer_worker, put_projects_into_queue
+from os_credits.db_client.tasks import consumer_worker, put_projects_into_queue
 from aiohttp import web
 from asyncio import TimeoutError
 from asyncio import create_task

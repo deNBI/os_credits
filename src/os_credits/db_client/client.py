@@ -7,11 +7,11 @@ from sqlalchemy import select, desc, create_engine, and_, asc
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, Session
-from src.os_credits.settings import config
-from src.os_credits.db_client.model import Base, MetricCredits, Project, Credits, PromCatalogReflected, PromMetricReflected, \
+from os_credits.settings import config
+from os_credits.db_client.model import Base, MetricCredits, Project, Credits, PromCatalogReflected, PromMetricReflected, \
     make_measurement_class, Metric, Label, \
     BaseMeasurement
-from src.os_credits.log import timescaledb_logger
+from os_credits.log import timescaledb_logger
 
 
 class TimescaleDBManager:

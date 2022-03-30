@@ -9,10 +9,10 @@ from aiohttp import web
 from aiohttp_jinja2 import setup
 from aiohttp_swagger import setup_swagger
 from jinja2 import FileSystemLoader
-from src.os_credits.worker_helper import create_consumer_worker, stop_consumer_worker, create_producer
-from src.os_credits.db_client.client import TimescaleDBManager
-from src.os_credits.log import internal_logger
-from src.os_credits.views import ping, credits_history_api, costs_per_hour, get_metrics, get_current_credits
+from os_credits.worker_helper import create_consumer_worker, stop_consumer_worker, create_producer
+from os_credits.db_client.client import TimescaleDBManager
+from os_credits.log import internal_logger
+from os_credits.views import ping, credits_history_api, costs_per_hour, get_metrics, get_current_credits
 
 APP_ROOT = Path(__file__).parent
 
@@ -49,8 +49,8 @@ async def create_app() -> web.Application:
     """
     # imported inside the function to allow pytest to set environment variables and have
     # them applied
-    from src.os_credits.settings import config
-    from src.os_credits.log import DEFAULT_LOGGING_CONFIG
+    from os_credits.settings import config
+    from os_credits.log import DEFAULT_LOGGING_CONFIG
 
     dictConfig(DEFAULT_LOGGING_CONFIG)
     internal_logger.info("Applied default logging config")

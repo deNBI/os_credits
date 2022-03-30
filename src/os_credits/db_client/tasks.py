@@ -5,9 +5,9 @@ from typing import cast, Dict
 from aiohttp.web import Application
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.os_credits.db_client.client import TimescaleDBManager
-from src.os_credits.log import producer_logger, task_logger, TASK_ID
-from src.os_credits.settings import config
+from os_credits.db_client.client import TimescaleDBManager
+from os_credits.log import producer_logger, task_logger, TASK_ID
+from os_credits.settings import config
 
 
 def unique_identifier(project_name: str) -> str:
