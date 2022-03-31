@@ -392,5 +392,5 @@ async def get_current_credits(request: web.Request) -> web.Response:
     if not project:
         raise web.HTTPNotFound(reason=f"No credits found for {project_name}.")
     return web.json_response(
-        {"current_credits": float(project.used_credits)}
+        {"current_credits": float(project[0].used_credits)}
     )
