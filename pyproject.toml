@@ -20,7 +20,7 @@ pytest = "6.2.5"
 pytest-aiohttp = "1.0.4"
 pre-commit = "2.18.1"
 black = {version = "22.1.0",allow-prereleases = true}
-sphinx-autodoc-typehints = "1.17.1"
+sphinx-autodoc-typehints = "1.18.1"
 mypy = "0.942"
 sphinx = "4.4.0"
 pytest-localserver = "0.5.1.post0"
