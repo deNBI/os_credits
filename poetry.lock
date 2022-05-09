@@ -91,6 +91,18 @@ python-versions = ">=3.6"
 frozenlist = ">=1.1.0"
 
 [[package]]
+name = "aiosmtpd"
+version = "1.4.2"
+description = "aiosmtpd - asyncio based SMTP server"
+category = "dev"
+optional = false
+python-versions = "~=3.6"
+
+[package.dependencies]
+atpublic = "*"
+attrs = "*"
+
+[[package]]
 name = "aiosmtplib"
 version = "1.1.6"
 description = "asyncio SMTP client"
@@ -133,6 +145,14 @@ description = "Atomic file writes."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "atpublic"
+version = "3.0.1"
+description = "Keep all y'all's __all__'s in sync"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
 
 [[package]]
 name = "attrs"
@@ -897,13 +917,14 @@ tests = ["mock"]
 
 [[package]]
 name = "pytest-localserver"
-version = "0.5.1.post0"
+version = "0.6.0"
 description = "py.test plugin to test server connections locally."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+python-versions = ">=3.5"
 
 [package.dependencies]
+aiosmtpd = "*"
 werkzeug = ">=0.10"
 
 [[package]]
@@ -1261,7 +1282,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "6bca832e53ab7a26f3c332e7a51863924750fa3cfe1d5d2d283e29d53e336352"
+content-hash = "20cfb4557e80bfeffd193f4a065baeddbd8ffe76fd181518de4a6fbaced29924"
 
 [metadata.files]
 aiohttp = [
@@ -1358,6 +1379,10 @@ aiosignal = [
     {file = "aiosignal-1.2.0-py3-none-any.whl", hash = "sha256:26e62109036cd181df6e6ad646f91f0dcfd05fe16d0cb924138ff2ab75d64e3a"},
     {file = "aiosignal-1.2.0.tar.gz", hash = "sha256:78ed67db6c7b7ced4f98e495e572106d5c432a93e1ddd1bf475e1dc05f5b7df2"},
 ]
+aiosmtpd = [
+    {file = "aiosmtpd-1.4.2-py3-none-any.whl", hash = "sha256:314f70b74cb8474882cef396b186fbfad8660c7b52be5c1937f3c31df14232a4"},
+    {file = "aiosmtpd-1.4.2.tar.gz", hash = "sha256:aa891d010d2097274189078c6ce2a59a167f3fb2e974e028b572a61e92e1549c"},
+]
 aiosmtplib = [
     {file = "aiosmtplib-1.1.6-py3-none-any.whl", hash = "sha256:84174765778b2c5e0e207fbce0a769202fcf0c3de81faa87cc03551a6333bfa9"},
     {file = "aiosmtplib-1.1.6.tar.gz", hash = "sha256:d138fe6ffecbc9e6320269690b9ac0b75e540ef96e8f5c77d4a306760014dce2"},
@@ -1377,6 +1402,10 @@ async-timeout = [
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
+]
+atpublic = [
+    {file = "atpublic-3.0.1-py3-none-any.whl", hash = "sha256:3deaa4aed146bf4adf5a8e0f9e4f0096774169a7157621753aa408d9a180b8b5"},
+    {file = "atpublic-3.0.1.tar.gz", hash = "sha256:bb072b50e6484490404e5cb4034e782aaa339fdd6ac36434e53c10791aef18bf"},
 ]
 attrs = [
     {file = "attrs-20.3.0-py2.py3-none-any.whl", hash = "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6"},
@@ -2022,8 +2051,8 @@ pytest-isort = [
     {file = "pytest_isort-2.0.0-py3-none-any.whl", hash = "sha256:ab949c593213dad38ba75db32a0ce361fcddd11d4152be4a2c93b85104cc4376"},
 ]
 pytest-localserver = [
-    {file = "pytest-localserver-0.5.1.post0.tar.gz", hash = "sha256:5ec7f8e6534cf03887af2cb59e577f169ac0e8b2fd2c3e3409280035f386d407"},
-    {file = "pytest_localserver-0.5.1.post0-py3-none-any.whl", hash = "sha256:b3ff1b8bade571d54701bad3efd68ca1bb463ad88daa75da15cc8842809659ea"},
+    {file = "pytest-localserver-0.6.0.tar.gz", hash = "sha256:ddc479aba96a7da0e7a1cc7d3a303e50582d6d505803e8f67b827218f9fe0f65"},
+    {file = "pytest_localserver-0.6.0-py3-none-any.whl", hash = "sha256:47b1718643ca376a42f8c6079b03519afe4e754c6b198bf06109bed735983919"},
 ]
 pytest-mypy = [
     {file = "pytest-mypy-0.9.1.tar.gz", hash = "sha256:9ffa3bf405c12c5c6be9e92e22bebb6ab2c91b9c32f45b0f0c93af473269ab5c"},
