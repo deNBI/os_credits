@@ -18,7 +18,7 @@ mypy_extensions = "0.4.3"
 aiohttp-devtools = "1.0.post0"
 pytest = "6.2.5"
 pytest-aiohttp = "1.0.4"
-pre-commit = "2.18.1"
+pre-commit = "2.19.0"
 black = {version = "22.1.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.17.1"
 mypy = "0.942"
