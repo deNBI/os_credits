@@ -85,6 +85,7 @@ class Metric(PromCatalogReflected, Base):
     Used to get prom_metric.<metric_name> views.
     """
     __tablename__ = "metric"
+    __table_args__ = ({"schema": "_prom_catalog"})
     metric_name = Column(String)
 
     def __repr__(self):
@@ -97,6 +98,7 @@ class Label(PromCatalogReflected, Base):
     Once reflected this class can be used in SQLAlchemy queries, e.g. select(Label).where(Label.key == 'project_name').
     """
     __tablename__ = "label"
+    __table_args__ = ({"schema": "_prom_catalog"})
     id = Column(BigInteger, primary_key=True)
     key = Column(String)
     value = Column(String)
