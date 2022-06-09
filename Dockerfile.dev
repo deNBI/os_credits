@@ -1,18 +1,18 @@
 # Expected to be called with `--volume $(PWD)/src:/code/src:ro`
 # Uses `adev` from `aiohttp-devtools` to restart the application on any code change
-FROM python:3.10.1-alpine
+FROM python:3.10.4-alpine
 
 ADD src /code/src
 ADD pyproject.toml poetry.lock /code/
 WORKDIR /code
-RUN apk -U upgrade && apk --no-cache add gcc wget linux-headers musl-dev libffi-dev libressl-dev cargo
+RUN apk -U upgrade && apk --no-cache add gcc wget linux-headers musl-dev libffi-dev libressl-dev cargo build-base libpq-dev
 RUN pip install cryptography
 RUN pip install poetry
 # install to system
 RUN poetry config virtualenvs.create false
 # we do not need any development packages except aiohttp-devtools to
 # automatically restart the app once we changed the bind-mounted source code
-RUN cp /usr/local/lib/python3.9/site-packages/certifi/cacert.pem /cacert.pem
+RUN cp /usr/local/lib/python3.10/site-packages/certifi/cacert.pem /cacert.pem
 RUN export REQUESTS_CA_BUNDLE=/cacert.pem && poetry install --no-dev && pip install --no-cache aiohttp-devtools
 
 EXPOSE 80
