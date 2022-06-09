@@ -2,38 +2,40 @@
 version: "3.5"
 services:
   credits:
+    build:
+      dockerfile: Dockerfile.dev
     image: os_credits-dev:latest
+    container_name: dev_os_credits
+    networks:
+      - credits
     env_file:
       - .env
-    environment:
-      - MAIL_SMTP_SERVER=smtp_server
-      - MAIL_NOT_STARTTLS=1
-      - INFLUXDB_HOST=influxdb
-      - API_KEY
     ports:
       - "8002:80"
     depends_on:
-      - influxdb
-      - smtp_server
+      - timescaledb
     volumes:
       - "./src:/code/src:ro"
 
-  influxdb:
-    image: "influxdb:1.8-alpine"
-    container_name: portal_influxdb
+  timescaledb:
+    image: "timescale/timescaledb:2.5.2-pg14"
+    container_name: dev_timescaledb
+    command: postgres -c shared_preload_libraries=timescaledb
+    networks:
+      - credits
+    env_file:
+      - .env
     environment:
-      - INFLUXDB_REPORTING_DISABLED=true
-      - INFLUXDB_DB=credits_history
-      - INFLUXDB_HTTP_AUTH_ENABLED=false
-    healthcheck:
-      test: wget http://localhost:8086/ping -qO /dev/null || return 1
-      interval: 2m
-      timeout: 10s
-      retries: 3
-      start_period: 5s
-
-  smtp_server:
-    image: "python:3.10-alpine"
-    command: python3 -m smtpd -n -c DebuggingServer
+      - TIMESCALEDB_TELEMETRY=off
     expose:
-      - "25"
+      - "5432"
+    volumes:
+      - credits_data:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d
+
+volumes:
+  credits_data:
+    external: false
+
+networks:
+  credits:
