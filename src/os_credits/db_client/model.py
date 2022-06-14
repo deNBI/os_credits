@@ -1,3 +1,5 @@
+from enum import Enum
+
 from sqlalchemy import Column, String, Boolean, event, DDL, func, BigInteger, ForeignKey, Float, text
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.ext.declarative import DeferredReflection
@@ -147,3 +149,8 @@ def make_measurement_class(table_name):
             return BaseMeasurement.__class__.__name__
 
     return Measurement
+
+
+class LimitType(str, Enum):
+    HALF_LIMIT_REACHED = "half limit reached"
+    FULL_LIMIT_REACHED = "full limit reached"
