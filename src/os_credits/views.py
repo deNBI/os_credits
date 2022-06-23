@@ -362,11 +362,12 @@ async def costs_per_hour(request: web.Request) -> web.Response:
     except JSONDecodeError:
         raise web.HTTPBadRequest(reason="Invalid JSON")
     returned_costs_per_hour = Decimal(0)
+    quantize_precision = Decimal(config["OS_CREDITS_PRECISION"])
     for metric_name, spec in machine_specs.items():
         try:
             cost = Decimal(config["METRICS_TO_BILL"][metric_name])
             spec = Decimal(spec)
-            returned_costs_per_hour += (spec * cost).quantize(config["OS_CREDITS_PRECISION"])
+            returned_costs_per_hour += (spec * cost).quantize(quantize_precision)
         except KeyError:
             raise web.HTTPNotFound(reason=f"Unknown measurement `{metric_name}`.")
         except TypeError:
@@ -374,7 +375,7 @@ async def costs_per_hour(request: web.Request) -> web.Response:
                 reason=f"Parameter {metric_name} had wrong type."
             )
     return web.json_response(
-        float(returned_costs_per_hour.quantize(config["OS_CREDITS_PRECISION"]))
+        float(returned_costs_per_hour.quantize(quantize_precision))
     )
 
 
@@ -392,5 +393,5 @@ async def get_current_credits(request: web.Request) -> web.Response:
     if not project:
         raise web.HTTPNotFound(reason=f"No credits found for {project_name}.")
     return web.json_response(
-        {"current_credits": float(project[0].used_credits)}
+        {"current_credits": float(project[0].used_credits), "granted_credits": float(project[0].granted_credits)}
     )

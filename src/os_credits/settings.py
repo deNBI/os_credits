@@ -170,7 +170,7 @@ class Config(TypedDict):
     API_CONTACT_BASE_URL: str
     MAIL_CONTACT_URL: str
     ENDPOINTS_ONLY: bool
-    OS_CREDITS_PRECISION: int
+    OS_CREDITS_PRECISION: str
 
 
 default_config = Config(
@@ -187,7 +187,7 @@ default_config = Config(
     API_CONTACT_BASE_URL="",
     MAIL_CONTACT_URL="",
     ENDPOINTS_ONLY=False,
-    OS_CREDITS_PRECISION=2
+    OS_CREDITS_PRECISION="0.01"
 )
 
 
@@ -216,8 +216,7 @@ def parse_config_from_environment() -> Config:
 
     for int_value_key in [
         "OS_CREDITS_WORKERS",
-        "POSTGRES_PORT",
-        "OS_CREDITS_PRECISION"
+        "POSTGRES_PORT"
     ]:
         try:
             int_value = int(environ[int_value_key])
