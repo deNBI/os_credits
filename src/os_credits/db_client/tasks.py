@@ -6,6 +6,7 @@ from aiohttp.web import Application
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from os_credits.db_client.client import TimescaleDBManager
+from os_credits.db_client.model import LimitType
 from os_credits.log import producer_logger, task_logger, TASK_ID
 from os_credits.settings import config
 
@@ -172,7 +173,9 @@ async def compute_credits_by_label(
                 credits_value=(last_credits_entry.used_credits + credits_value)
             )
             if project.granted_credits > 0 and last_credits_entry.used_credits >= half_credits and not project.half_limit_reached_send:
-                await db_client.inform_half_limit_reached(last_credits_entry, project, session)
+                await db_client.inform_some_limit_reached(last_credits_entry, project, session, LimitType.HALF_LIMIT_REACHED)
+            if 0 < project.granted_credits <= last_credits_entry.used_credits and not project.full_limit_reached_send:
+                await db_client.inform_some_limit_reached(last_credits_entry, project, session, LimitType.FULL_LIMIT_REACHED)
             task_logger.debug("Last metric now: {0}".format(last_metric_credits))
             task_logger.debug("Last credits now: {0}".format(last_credits_entry))
             metric_num += 1

@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from os_credits.settings import config
 from os_credits.db_client.model import Base, MetricCredits, Project, Credits, PromCatalogReflected, PromMetricReflected, \
     make_measurement_class, Metric, Label, \
-    BaseMeasurement
+    BaseMeasurement, LimitType
 from os_credits.log import timescaledb_logger
 
 
@@ -258,6 +258,9 @@ class TimescaleDBManager:
                         half_limit = project.granted_credits / 2.0
                         if project.used_credits < half_limit:
                             project.half_limit_reached_send = False
+                    if project.full_limit_reached_send:
+                        if project.used_credits < project.granted_credits:
+                            project.full_limit_reached_send = False
                     await session.flush()
                 else:
                     timescaledb_logger.warning(f"Could not get granted credits for {project}")
@@ -266,31 +269,37 @@ class TimescaleDBManager:
         except Exception as e:
             timescaledb_logger.exception(e)
 
-    async def inform_half_limit_reached(self, last_credits_entry, project, session):
+    async def inform_some_limit_reached(self, last_credits_entry, project, session, limit_type: LimitType):
         timeout = aiohttp.ClientTimeout(total=10, connect=5)
         data = {
             "project_name": project.project_name,
             "granted_credits": project.granted_credits,
             "used_credits": last_credits_entry.used_credits,
-            "timestamp": datetime.timestamp(last_credits_entry.time)
+            "timestamp": datetime.timestamp(last_credits_entry.time),
+            "limit_type": limit_type
         }
         headers = {"X-Api-Key": config["API_CONTACT_KEY"]}
         try:
-            timescaledb_logger.info(f"Sending information about half limit reached for {project} with {last_credits_entry}.")
+            timescaledb_logger.info(f"Sending information about {limit_type} for {project} with {last_credits_entry}.")
             async with self.client_session.post(
-                f"{config['MAIL_CONTACT_URL']}",
+                f"{config['MAIL_CONTACT_URL']}/credits-limit/",
                 timeout=timeout,
                 data=data,
                 headers=headers
             ) as response:
                 if response.status == 200:
-                    project.half_limit_reached_send = True
-                    await session.flush()
-                    timescaledb_logger.info(f"Information about half limit reached send for {project} with {last_credits_entry}.")
+                    if limit_type is LimitType.HALF_LIMIT_REACHED:
+                        project.half_limit_reached_send = True
+                        await session.flush()
+                        timescaledb_logger.info(f"Information about {limit_type} send for {project} with {last_credits_entry}.")
+                    elif limit_type is LimitType.FULL_LIMIT_REACHED:
+                        project.full_limit_reached_send = True
+                        await session.flush()
+                        timescaledb_logger.info(f"Information about {limit_type} send for {project} with {last_credits_entry}.")
                 else:
-                    timescaledb_logger.warning(f"Could not send half limit reached mail for {project} with {last_credits_entry}")
+                    timescaledb_logger.warning(f"Could not send {limit_type} mail for {project} with {last_credits_entry}")
         except ClientConnectorError:
-            timescaledb_logger.debug(f"No connection possible to send half limit reached mail for {project} with {last_credits_entry}.")
+            timescaledb_logger.debug(f"No connection possible to send {limit_type} mail for {project} with {last_credits_entry}.")
         except Exception as e:
             timescaledb_logger.exception(e)
 

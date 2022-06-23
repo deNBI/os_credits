@@ -13,7 +13,6 @@ from __future__ import annotations
 import json
 from collections import ChainMap
 from collections import UserDict
-from decimal import Decimal
 from os import environ
 from typing import Any, TypedDict
 from typing import Dict
