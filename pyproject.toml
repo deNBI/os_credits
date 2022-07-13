@@ -12,7 +12,7 @@ aiohttp_jinja2 = "1.5"
 aiosmtplib = "1.1.6"
 asyncpg = "0.26.0"
 SQLAlchemy = "1.4.31"
-alembic = "1.8.0"
+alembic = "1.8.1"
 psycopg2 = "2.9.3"
 
 [tool.poetry.dev-dependencies]
