@@ -18,6 +18,8 @@ ENV CREDITS_HOST 0.0.0.0
 COPY --from=builder /code/dist/$WHEEL_NAME /tmp/
 
 # wget to perform healthcheck against /ping endpoint
+RUN apk add build-base
+
 RUN apk update && apk --no-cache add gcc wget linux-headers musl-dev libpq-dev \
 	&& pip install --no-cache /tmp/$WHEEL_NAME \
 	&& rm /tmp/$WHEEL_NAME
