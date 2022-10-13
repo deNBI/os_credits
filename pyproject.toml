@@ -13,14 +13,14 @@ aiosmtplib = "1.1.7"
 asyncpg = "0.26.0"
 SQLAlchemy = "1.4.31"
 alembic = "1.8.1"
-psycopg2 = "2.9.3"
+psycopg2 = "2.9.4"
 
 [tool.poetry.dev-dependencies]
 aiohttp-devtools = "1.0.post0"
 pre-commit = "2.20.0"
-black = {version = "22.8.0",allow-prereleases = true}
-sphinx-autodoc-typehints = "1.19.2"
-sphinx = "5.1.1"
+black = {version = "22.10.0",allow-prereleases = true}
+sphinx-autodoc-typehints = "1.19.4"
+sphinx = "5.2.3"
 sphinxcontrib-trio = "1.1.2"
 lxml = "4.8.0"
 sphinxcontrib-programoutput = "0.17"
