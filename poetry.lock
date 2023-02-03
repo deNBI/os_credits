@@ -181,19 +181,19 @@ frozenlist = ">=1.1.0"
 
 [[package]]
 name = "aiosmtplib"
-version = "1.1.7"
+version = "2.0.1"
 description = "asyncio SMTP client"
 category = "main"
 optional = false
-python-versions = ">=3.5.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 files = [
-    {file = "aiosmtplib-1.1.7-py3-none-any.whl", hash = "sha256:c1403e70fce769643820cb2c5bf0bd4f7ea83a01c60e854c81a6f5d7ccff2656"},
-    {file = "aiosmtplib-1.1.7.tar.gz", hash = "sha256:5810657a86b19476c93fa280c499ca3ef88ce26f2b74dae202989ae06377d107"},
+    {file = "aiosmtplib-2.0.1-py3-none-any.whl", hash = "sha256:2f619f900d1bfe25a8f453005958ba78870abbfeeffb2fdef11265be0df26913"},
+    {file = "aiosmtplib-2.0.1.tar.gz", hash = "sha256:a20aae28f67169dd761beef4c62e4bb3073d035f9ee20c2e4f18baa1a73e7c88"},
 ]
 
 [package.extras]
-docs = ["jinja2 (>=2.0,<3.1)", "sphinx (>=2,<4)", "sphinx_autodoc_typehints (>=1.7.0,<2.0.0)"]
-uvloop = ["uvloop (>=0.13,<0.15)"]
+docs = ["sphinx (>=5.3.0,<6.0.0)", "sphinx_autodoc_typehints (>=1.7.0,<2.0.0)"]
+uvloop = ["uvloop (>=0.14,<0.15)", "uvloop (>=0.14,<0.15)", "uvloop (>=0.17,<0.18)"]
 
 [[package]]
 name = "alabaster"
@@ -2046,4 +2046,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.4"
-content-hash = "223a518409a92eb376ea9dc8a2e3fad5b3587e095c4f8e07fda1bc2d43e988c5"
+content-hash = "3b36229a36b962b14ec18b5bddb13de5f695043af5aff2d69549b84561b1ec21"
