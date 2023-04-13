@@ -9,7 +9,7 @@ jobs:
               uses: rokroskar/workflow-run-cleanup-action@v0.3.3
               env:
                 GITHUB_TOKEN: "${{ secrets.GITHUBSECRET2 }}"
-            - uses: actions/checkout@v3.5.1
+            - uses: actions/checkout@v3.5.2
             - name: Build with retry
               uses: Wandalen/wretry.action@v1.0.11
               with:
