@@ -17,7 +17,7 @@ psycopg2 = "2.9.6"
 
 [tool.poetry.dev-dependencies]
 aiohttp-devtools = "1.0.post0"
-pre-commit = "3.3.1"
+pre-commit = "3.3.2"
 black = {version = "23.3.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.23.4"
 sphinx = "5.3.0"
