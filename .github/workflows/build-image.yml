@@ -11,7 +11,7 @@ jobs:
                 GITHUB_TOKEN: "${{ secrets.GITHUBSECRET2 }}"
             - uses: actions/checkout@v3.5.3
             - name: Build with retry
-              uses: Wandalen/wretry.action@v1.0.42
+              uses: Wandalen/wretry.action@v1.3.0
               with:
                 command: docker build --no-cache  . 
                 attempt_limit: 3
