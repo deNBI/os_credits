@@ -13,7 +13,7 @@ aiosmtplib = "2.0.2"
 asyncpg = "0.28.0"
 SQLAlchemy = "1.4.49"
 alembic = "1.11.2"
-psycopg2 = "2.9.6"
+psycopg2 = "2.9.7"
 
 [tool.poetry.dev-dependencies]
 aiohttp-devtools = "1.1"
