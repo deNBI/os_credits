@@ -20,7 +20,7 @@ aiohttp-devtools = "1.1"
 pre-commit = "3.3.3"
 black = {version = "23.7.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.24.0"
-sphinx = "7.2.3"
+sphinx = "7.2.4"
 sphinxcontrib-trio = "1.1.2"
 lxml = "4.9.3"
 sphinxcontrib-programoutput = "0.17"
