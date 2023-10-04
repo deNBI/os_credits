@@ -15,7 +15,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUBSECRET2 }}
 
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.1.0
 
       - name: Extract branch name
         shell: bash
