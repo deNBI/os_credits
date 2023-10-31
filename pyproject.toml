@@ -19,7 +19,7 @@ psycopg2 = "2.9.9"
 aiohttp-devtools = "1.1"
 pre-commit = "3.5.0"
 black = {version = "23.10.1",allow-prereleases = true}
-sphinx-autodoc-typehints = "1.24.0"
+sphinx-autodoc-typehints = "1.24.1"
 sphinx = "7.2.6"
 sphinxcontrib-trio = "1.1.2"
 lxml = "4.9.3"
