@@ -99,18 +99,18 @@ speedups = ["Brotli", "aiodns", "brotlicffi"]
 
 [[package]]
 name = "aiohttp-devtools"
-version = "1.1"
+version = "1.1.1"
 description = "Dev tools for aiohttp"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "aiohttp-devtools-1.1.tar.gz", hash = "sha256:e84f072a843aeb655e614e937d1fcf7bef8d9155b3cbaee35a0f30d192ed055e"},
-    {file = "aiohttp_devtools-1.1-py37.py38.py39.py310-none-any.whl", hash = "sha256:5ff708ed3d54639fe80491187f7bcb95dfe01dec6e112de6d688de64aa8507a0"},
+    {file = "aiohttp-devtools-1.1.1.tar.gz", hash = "sha256:735ab26b5f135a4058181924ccc839a3ca155bc1ce8aa0bd0e8c521591a9eb65"},
+    {file = "aiohttp_devtools-1.1.1-py38.py39.py310.py311-none-any.whl", hash = "sha256:9911da1dafe60b3c7011c88f6cfff130093e8dbc0168c99f008716d63cfadf80"},
 ]
 
 [package.dependencies]
-aiohttp = ">=3.8.0"
+aiohttp = ">=3.9"
 click = ">=6.6"
 devtools = ">=0.6"
 Pygments = ">=2.2.0"
@@ -2069,4 +2069,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.4"
-content-hash = "0bf476bcaa973bbc59a82c6c64b9330880c8408b0720fe59bfec215cd3b34e49"
+content-hash = "0225ab3ee17477f6151f924990c050e5e95d8d574c4c9b321bf8797d5d39fc5e"
