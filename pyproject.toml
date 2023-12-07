@@ -16,7 +16,7 @@ alembic = "1.12.1"
 psycopg2 = "2.9.9"
 
 [tool.poetry.dev-dependencies]
-aiohttp-devtools = "1.1.1"
+aiohttp-devtools = "1.1.2"
 pre-commit = "3.5.0"
 black = {version = "23.11.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.25.2"
