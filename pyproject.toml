@@ -22,7 +22,7 @@ black = {version = "23.11.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.25.2"
 sphinx = "7.2.6"
 sphinxcontrib-trio = "1.1.2"
-lxml = "4.9.3"
+lxml = "4.9.4"
 sphinxcontrib-programoutput = "0.17"
 docker-compose = "1.29.2"
 
