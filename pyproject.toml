@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "os_credits"
-version = "2.0.0"
+version = "2.1.0"
 description = ""
 authors = ["gilbus", "ekatchko"]
 
 [tool.poetry.dependencies]
 python = "3.10.4"
-aiohttp = "3.9.1"
+aiohttp = "3.9.4"
 aiohttp-swagger = "1.0.16"
 aiohttp_jinja2 = "1.5.1"
 aiosmtplib = "2.0.2"
