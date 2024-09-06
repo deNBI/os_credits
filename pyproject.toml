@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "os_credits"
-version = "2.2.0"
+version = "2.3.0"
 description = ""
 authors = ["gilbus", "ekatchko"]
 
@@ -22,7 +22,7 @@ black = {version = "24.3.0",allow-prereleases = true}
 sphinx-autodoc-typehints = "1.25.2"
 sphinx = "7.2.6"
 sphinxcontrib-trio = "1.1.2"
-lxml = "4.9.4"
+lxml = "5.3.0"
 sphinxcontrib-programoutput = "0.17"
 docker-compose = "1.29.2"
 
