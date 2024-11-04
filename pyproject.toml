@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "os_credits"
-version = "2.2.0"
+version = "2.3.0"
 description = ""
 authors = ["gilbus", "ekatchko"]
 
@@ -12,7 +12,7 @@ aiohttp_jinja2 = "1.5.1"
 aiosmtplib = "2.0.2"
 asyncpg = "0.29.0"
 SQLAlchemy = "1.4.51"
-alembic = "1.12.1"
+alembic = "1.14.0"
 psycopg2 = "2.9.9"
 
 [tool.poetry.dev-dependencies]
