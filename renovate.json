@@ -25,9 +25,7 @@
     "labels": ["security"]
   },
   "baseBranches": ["dev"],
-  "reviewers": ["team:portal-dev"],
   "labels": ["dependencies"],
-  "assignees": ["team:portal-dev"],
   "branchPrefix": "deps/",
   "bumpVersion": "minor",
   "rebaseWhen": "behind-base-branch",	
